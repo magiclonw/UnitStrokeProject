@@ -8,10 +8,10 @@ package com.magiclon.unitstrokeproject.db
  */
 
 class UnitStrokeBean {
-    var type: Int = 0
-    var typename: String=""
-    var lat: Double = 0.toDouble()
-    var lon: Double = 0.toDouble()
+    private var type: Int = 0
+    private var typename: String=""
+    private var lat: Double = 0.toDouble()
+    private var lon: Double = 0.toDouble()
 
     constructor(lat: Double, lon: Double) {
         this.lat = lat
