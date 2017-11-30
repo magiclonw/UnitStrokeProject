@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
     internal var colors = intArrayOf(Color.argb(0, 0, 0, 0), Color.argb(90, 250, 5, 22), Color.argb(90, 155, 5, 251), Color.argb(90, 155, 5, 251), Color.argb(90, 51, 5, 251), Color.argb(90, 5, 167, 251), Color.argb(90, 5, 237, 251), Color.argb(90, 5, 237, 251), Color.argb(90, 171, 249, 239), Color.argb(90, 5, 251, 28), Color.argb(90, 251, 248, 5), Color.argb(90, 251, 150, 5))
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.e("aaa","oncreate")
         setContentView(R.layout.activity_main)
         ImmersionBar.with(this).titleBar(toolbar,false).transparentBar()?.fullScreen(false)?.navigationBarColor(R.color.white)?.keyboardEnable(true, WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)?.statusBarDarkFont(true,0.2f)?.init()
         map.onCreate(savedInstanceState);
