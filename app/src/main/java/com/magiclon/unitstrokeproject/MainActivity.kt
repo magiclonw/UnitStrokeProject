@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         ImmersionBar.with(this).titleBar(toolbar,false).transparentBar()?.fullScreen(false)?.navigationBarColor(R.color.white)?.keyboardEnable(true, WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)?.statusBarDarkFont(true,0.2f)?.init()
-        map.onCreate(savedInstanceState);
+        map.onCreate(savedInstanceState)
         mAMap = map.map
         mAMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(40.488054, 111.4149225), 9.2f))
         mAMap?.uiSettings?.setAllGesturesEnabled(false)
