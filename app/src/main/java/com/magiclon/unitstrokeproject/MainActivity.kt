@@ -11,6 +11,8 @@ import com.amap.api.maps.model.PolygonOptions
 import com.gyf.barlibrary.ImmersionBar
 import com.magiclon.unitstrokeproject.db.MyDb
 import kotlinx.android.synthetic.main.activity_main.*
+import com.amap.api.maps.model.LatLngBounds
+
 
 class MainActivity : AppCompatActivity() {
     private var db: MyDb? = null
@@ -20,13 +22,33 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        ImmersionBar.with(this).titleBar(toolbar,false).transparentBar()?.fullScreen(false)?.navigationBarColor(R.color.white)?.keyboardEnable(true, WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)?.statusBarDarkFont(true,0.2f)?.init()
+        ImmersionBar.with(this).titleBar(toolbar, false).transparentBar()?.fullScreen(false)?.navigationBarColor(R.color.white)?.keyboardEnable(true, WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)?.statusBarDarkFont(true, 0.2f)?.init()
         map.onCreate(savedInstanceState)
         mAMap = map.map
-        mAMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(40.488054, 111.4149225), 9.2f))
+        val b = LatLngBounds.builder()
+//        var p1 = LatLng((40.488054 * 2) - 39.588911, (111.4149225 * 2) - 110.518197)
+//        var p2 = LatLng((40.488054 * 2) - 39.588911, (111.4149225 * 2) - 112.311648)
+//        var p3 = LatLng((40.488054 * 2) - 41.387197, (111.4149225 * 2) - 110.518197)
+//        var p4 = LatLng((40.488054 * 2) - 41.387197, (111.4149225 * 2) - 112.311648)
+
+        var p5 = LatLng(39.588911, 110.518197)
+        var p6 = LatLng(39.588911, 112.311648)
+        var p7 = LatLng(41.387197, 110.518197)
+        var p8 = LatLng(41.387197, 112.311648)
+
+//        b.include(p1)
+//        b.include(p2)
+//        b.include(p3)
+//        b.include(p4)
+        b.include(p5)
+        b.include(p6)
+        b.include(p7)
+        b.include(p8)
+        mAMap?.moveCamera(CameraUpdateFactory.newLatLngBounds(b.build(), 50))
+
         mAMap?.uiSettings?.setAllGesturesEnabled(false)
         mAMap?.uiSettings?.isZoomControlsEnabled = false
-        db= MyDb(this)
+        db = MyDb(this)
         Thread(Runnable {
             latlngs = db?.allInfoLatlng
             for (i in 0..11) {
@@ -47,6 +69,7 @@ class MainActivity : AppCompatActivity() {
             }
         }).start()
     }
+
     /**
      * 方法必须重写
      */
