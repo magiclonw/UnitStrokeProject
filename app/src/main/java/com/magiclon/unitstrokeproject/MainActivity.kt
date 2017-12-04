@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         map?.onDestroy()
-        ImmersionBar.with(this).destroy();
+        ImmersionBar.with(this).destroy()
     }
 
 }
