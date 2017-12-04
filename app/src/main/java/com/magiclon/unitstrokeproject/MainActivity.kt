@@ -17,7 +17,6 @@ import com.amap.api.maps.model.LatLngBounds
 class MainActivity : AppCompatActivity() {
     private var db: MyDb? = null
     private var mAMap: AMap? = null
-    private var latlngs: List<List<LatLng>>? = null
     private var colors = intArrayOf(Color.argb(0, 0, 0, 0), Color.argb(90, 250, 5, 22), Color.argb(90, 155, 5, 251), Color.argb(90, 155, 5, 251), Color.argb(90, 51, 5, 251), Color.argb(90, 5, 167, 251), Color.argb(90, 5, 237, 251), Color.argb(90, 5, 237, 251), Color.argb(90, 171, 249, 239), Color.argb(90, 5, 251, 28), Color.argb(90, 251, 248, 5), Color.argb(90, 251, 150, 5))
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,28 +43,22 @@ class MainActivity : AppCompatActivity() {
         b.include(p6)
         b.include(p7)
         b.include(p8)
-        mAMap?.moveCamera(CameraUpdateFactory.newLatLngBounds(b.build(), 50))
+        mAMap?.moveCamera(CameraUpdateFactory.newLatLngBounds(b.build(), 5))
 
         mAMap?.uiSettings?.setAllGesturesEnabled(false)
         mAMap?.uiSettings?.isZoomControlsEnabled = false
         db = MyDb(this)
         Thread(Runnable {
-            latlngs = db?.allInfoLatlng
             for (i in 0..11) {
+                var latlngs = db?.someLatlng(i + 1)
                 val polygonOptions = PolygonOptions()
-                val ulist = latlngs?.get(i)
-                polygonOptions.addAll(ulist)
+                polygonOptions.addAll(latlngs)
                 var strokewidth = 3
                 if (i == 0) {
                     strokewidth = 5
                 }
                 polygonOptions.fillColor(colors[i]).strokeWidth(strokewidth.toFloat()).strokeColor(Color.RED)
                 mAMap?.addPolygon(polygonOptions)
-                try {
-                    Thread.sleep(50)
-                } catch (e: InterruptedException) {
-                    e.printStackTrace()
-                }
             }
         }).start()
     }

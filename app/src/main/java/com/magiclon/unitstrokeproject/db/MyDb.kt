@@ -68,6 +68,23 @@ class MyDb(context: Context) {
             db.close()
             return list
         }
+    fun someLatlng(type: Int): List<LatLng> {
+            val db = mysqliteopenhelper!!.readableDatabase
+            db.beginTransaction()
+            val cursor = db.rawQuery("select type,lat,lon from unitstroke where type=" + type, null)
+            val latLngs = ArrayList<LatLng>()
+            while (cursor.moveToNext()) {
+                val type = cursor.getInt(0)
+                val lat = cursor.getDouble(1)
+                val lon = cursor.getDouble(2)
+                val latlng = LatLng(lat, lon)
+                latLngs.add(latlng)
+            }
+            cursor.close()
+            db.endTransaction()
+            db.close()
+            return latLngs
+        }
 
     init {
         if (mysqliteopenhelper == null) {
