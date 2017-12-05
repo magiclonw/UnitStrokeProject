@@ -25,24 +25,16 @@ class MainActivity : AppCompatActivity() {
         map.onCreate(savedInstanceState)
         mAMap = map.map
         val b = LatLngBounds.builder()
-//        var p1 = LatLng((40.488054 * 2) - 39.588911, (111.4149225 * 2) - 110.518197)
-//        var p2 = LatLng((40.488054 * 2) - 39.588911, (111.4149225 * 2) - 112.311648)
-//        var p3 = LatLng((40.488054 * 2) - 41.387197, (111.4149225 * 2) - 110.518197)
-//        var p4 = LatLng((40.488054 * 2) - 41.387197, (111.4149225 * 2) - 112.311648)
 
-        var p5 = LatLng(39.588911, 110.518197)
-        var p6 = LatLng(39.588911, 112.311648)
-        var p7 = LatLng(41.387197, 110.518197)
-        var p8 = LatLng(41.387197, 112.311648)
+        var p1 = LatLng(39.588911, 110.518197)
+        var p2 = LatLng(39.588911, 112.311648)
+        var p3 = LatLng(41.387197, 110.518197)
+        var p4 = LatLng(41.387197, 112.311648)
 
-//        b.include(p1)
-//        b.include(p2)
-//        b.include(p3)
-//        b.include(p4)
-        b.include(p5)
-        b.include(p6)
-        b.include(p7)
-        b.include(p8)
+        b.include(p1)
+        b.include(p2)
+        b.include(p3)
+        b.include(p4)
         mAMap?.moveCamera(CameraUpdateFactory.newLatLngBounds(b.build(), 5))
 
         mAMap?.uiSettings?.setAllGesturesEnabled(false)
@@ -95,5 +87,4 @@ class MainActivity : AppCompatActivity() {
         map?.onDestroy()
         ImmersionBar.with(this).destroy()
     }
-
 }
