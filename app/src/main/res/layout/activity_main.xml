@@ -28,7 +28,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_margin="10dp"
                 android:background="@color/colorPrimarya"
-                android:padding="10dp"
+                android:padding="5dp"
                 android:text="呼市低保分布图"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
