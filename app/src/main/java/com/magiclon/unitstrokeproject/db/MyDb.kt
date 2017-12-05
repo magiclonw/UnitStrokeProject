@@ -3,6 +3,7 @@ package com.magiclon.unitstrokeproject.db
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteStatement
 
 import com.amap.api.maps.model.LatLng
 
@@ -68,11 +69,13 @@ class MyDb(context: Context) {
             db.close()
             return list
         }
+
     fun someLatlng(type: Int): List<LatLng> {
-            val db = mysqliteopenhelper!!.readableDatabase
-            db.beginTransaction()
+        val db = mysqliteopenhelper!!.readableDatabase
+        db.beginTransaction()
+        val latLngs = ArrayList<LatLng>()
+        try {
             val cursor = db.rawQuery("select type,lat,lon from unitstroke where type=" + type, null)
-            val latLngs = ArrayList<LatLng>()
             while (cursor.moveToNext()) {
                 val type = cursor.getInt(0)
                 val lat = cursor.getDouble(1)
@@ -80,11 +83,16 @@ class MyDb(context: Context) {
                 val latlng = LatLng(lat, lon)
                 latLngs.add(latlng)
             }
+            db.setTransactionSuccessful()
             cursor.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
             db.endTransaction()
             db.close()
-            return latLngs
         }
+        return latLngs
+    }
 
     init {
         if (mysqliteopenhelper == null) {
@@ -94,6 +102,18 @@ class MyDb(context: Context) {
 
     fun insertLatLon(type: String, typename: String, lat: String, lon: String) {
         val db = mysqliteopenhelper!!.writableDatabase
-        db.execSQL("insert into unitstroke values (?,?,?,?);", arrayOf(type, typename, lat, lon))
+        db.beginTransaction()
+        try {
+            val sqlitestatement=db.compileStatement("insert into unitstroke values (?,?,?,?);")
+            sqlitestatement.bindString(1,type)
+            sqlitestatement.bindString(2,typename)
+            sqlitestatement.bindString(3,lat)
+            sqlitestatement.bindString(4,lon)
+            db.setTransactionSuccessful()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            db.endTransaction()
+        }
     }
 }

@@ -26,10 +26,10 @@ class MainActivity : AppCompatActivity() {
         mAMap = map.map
         val b = LatLngBounds.builder()
 
-        var p1 = LatLng(39.588911, 110.518197)
-        var p2 = LatLng(39.588911, 112.311648)
-        var p3 = LatLng(41.387197, 110.518197)
-        var p4 = LatLng(41.387197, 112.311648)
+        var p1 = LatLng(39.588911, 110.518197)//左上角
+        var p2 = LatLng(39.588911, 112.311648)//右上角
+        var p3 = LatLng(41.387197, 110.518197)//左下角
+        var p4 = LatLng(41.387197, 112.311648)//右下角
 
         b.include(p1)
         b.include(p2)
