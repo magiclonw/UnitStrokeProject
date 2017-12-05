@@ -17,7 +17,7 @@ import com.amap.api.maps.model.LatLngBounds
 class MainActivity : AppCompatActivity() {
     private var db: MyDb? = null
     private var mAMap: AMap? = null
-    private var colors = intArrayOf(Color.argb(0, 0, 0, 0), Color.argb(90, 250, 5, 22), Color.argb(90, 155, 5, 251), Color.argb(90, 155, 5, 251), Color.argb(90, 51, 5, 251), Color.argb(90, 5, 167, 251), Color.argb(90, 5, 237, 251), Color.argb(90, 5, 237, 251), Color.argb(90, 171, 249, 239), Color.argb(90, 5, 251, 28), Color.argb(90, 251, 248, 5), Color.argb(90, 251, 150, 5))
+    private var colors = intArrayOf(Color.argb(0, 0, 0, 0), Color.argb(120, 250, 5, 22), Color.argb(120, 155, 5, 251), Color.argb(120, 155, 5, 251), Color.argb(120, 51, 5, 251), Color.argb(120, 5, 167, 251), Color.argb(120, 5, 237, 251), Color.argb(120, 5, 237, 251), Color.argb(120, 171, 249, 239), Color.argb(120, 5, 251, 28), Color.argb(120, 251, 248, 5), Color.argb(120, 251, 150, 5))
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         b.include(p2)
         b.include(p3)
         b.include(p4)
-        mAMap?.moveCamera(CameraUpdateFactory.newLatLngBounds(b.build(), 5))
+        mAMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(b.build(), 5))
 
         mAMap?.uiSettings?.setAllGesturesEnabled(false)
         mAMap?.uiSettings?.isZoomControlsEnabled = false
