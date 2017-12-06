@@ -109,6 +109,7 @@ class MyDb(context: Context) {
             sqlitestatement.bindString(2,typename)
             sqlitestatement.bindString(3,lat)
             sqlitestatement.bindString(4,lon)
+            sqlitestatement.executeInsert()
             db.setTransactionSuccessful()
         } catch (e: Exception) {
             e.printStackTrace()
