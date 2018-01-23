@@ -1,6 +1,5 @@
 package com.magiclon.unitstrokeproject.activity
 
-import android.graphics.Color
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.magiclon.unitstrokeproject.R
@@ -11,17 +10,17 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.WindowManager
 import com.gyf.barlibrary.ImmersionBar
-import com.magiclon.unitstrokeproject.fragment.ListFragment
+import com.magiclon.unitstrokeproject.fragment.PeopleListFragment
 
 
 /**
  * 现享受新申请列表
  */
 class PeopleListActivity : AppCompatActivity() {
-    var mFragment1: ListFragment? = null
+    var mFragment1: PeopleListFragment? = null
 
-    var mFragment2: ListFragment? = null
-    private val mFragments = ArrayList<ListFragment>()
+    var mFragment2: PeopleListFragment? = null
+    private val mFragments = ArrayList<PeopleListFragment>()
     var mPagerAdapter: PagerAdapter? = null
     var depname = ""
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,10 +43,10 @@ class PeopleListActivity : AppCompatActivity() {
 
     private fun initFragment() {
         if (mFragment1 == null) {
-            mFragment1 = ListFragment(2)
+            mFragment1 = PeopleListFragment(2)
         }
         if (mFragment2 == null) {
-            mFragment2 = ListFragment(1)
+            mFragment2 = PeopleListFragment(1)
         }
 
         mFragments.add(mFragment1!!)
