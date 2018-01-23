@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
         mAMap?.setMapStatusLimits(limitbounds)
         mAMap?.uiSettings?.logoPosition = AMapOptions.LOGO_POSITION_BOTTOM_RIGHT
         mAMap?.setOnMapClickListener { latlng ->
-            polygons.forEachIndexed { index, polygon ->
+            polygons.forEachIndexed { _, polygon ->
                 if (polygon.contains(latlng)) {
                     changeData(polygon.id)
                     return@setOnMapClickListener
