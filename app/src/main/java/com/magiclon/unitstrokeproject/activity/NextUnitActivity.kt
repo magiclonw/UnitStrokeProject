@@ -154,7 +154,7 @@ class NextUnitActivity : AppCompatActivity() {
             }
 
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                InfoDialog(this@NextUnitActivity, "总计：${total}户\n\n所占比例：${(e?.y!! *100).toInt()}%\n\n${(total*e?.y).toInt()}户")
+                InfoDialog(this@NextUnitActivity, "总计：${total}户\n\n所占比例：${(e?.y!! *100).toInt()}%\n\n${(total* e.y).toInt()}户")
             }
         })
         mChart.setUsePercentValues(true)
