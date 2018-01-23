@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/touch_bg"
+    android:clickable="true"
+    tools:context="com.magiclon.unitstrokeproject.activity.NextUnitActivity">
+
+    <ImageView
+        android:id="@+id/iv_peoplelist_head"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/head" />
+
+    <ImageView
+        android:id="@+id/iv_peoplelist_neworxs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/newin" />
+
+    <TextView
+        android:id="@+id/tv_peoplelist_xstime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="享受时间：2018-01-19"
+        android:textSize="13dp"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_peoplelist_head"
+        app:layout_constraintStart_toEndOf="@+id/iv_peoplelist_head"
+        app:layout_constraintTop_toTopOf="@+id/iv_peoplelist_head" />
+
+    <TextView
+        android:id="@+id/tv_peoplelist_rh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="最近入户：2018-01-19"
+        android:textSize="13dp"
+        app:layout_constraintStart_toStartOf="@+id/tv_peoplelist_xstime"
+        app:layout_constraintTop_toBottomOf="@+id/tv_peoplelist_xstime" />
+
+    <TextView
+        android:id="@+id/tv_peoplelist_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:textColor="@color/black"
+        android:textSize="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_peoplelist_xstime"
+        app:layout_constraintStart_toStartOf="@+id/tv_peoplelist_xstime" />
+
+    <TextView
+        android:id="@+id/tv_peoplelist_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_peoplelist_neworxs" />
+
+    <TextView
+        android:id="@+id/tv_peoplelist_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="低保金额：800元"
+        android:textSize="13dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tv_peoplelist_rh"
+        app:layout_constraintTop_toBottomOf="@+id/tv_peoplelist_xstime" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/line"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</android.support.constraint.ConstraintLayout>

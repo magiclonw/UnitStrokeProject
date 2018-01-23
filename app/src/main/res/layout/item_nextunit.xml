@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/touch_bg"
+    tools:context="com.magiclon.unitstrokeproject.activity.NextUnitActivity">
+
+    <TextView
+        android:id="@+id/tv_item_nextunit_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="111111"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_item_nextunit_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:text="1万"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_nextunit_name" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/to" />
+
+    <TextView
+        android:id="@+id/tv_item_nextunit_contrycount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="农村 234户"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_item_nextunit_citycount"
+        app:layout_constraintStart_toEndOf="@+id/tv_item_nextunit_citycount"
+        app:layout_constraintTop_toTopOf="@+id/tv_item_nextunit_citycount" />
+
+    <TextView
+        android:id="@+id/tv_item_nextunit_citycount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:text="城市 348户"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_item_nextunit_count"
+        app:layout_constraintStart_toEndOf="@+id/tv_item_nextunit_count"
+        app:layout_constraintTop_toTopOf="@+id/tv_item_nextunit_count" />
+</android.support.constraint.ConstraintLayout>

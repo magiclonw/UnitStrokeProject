@@ -4,6 +4,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteStatement
+import android.util.Log
 
 import com.amap.api.maps.model.LatLng
 
@@ -25,7 +26,6 @@ class MyDb(context: Context) {
     val allInfo: List<List<UnitStrokeBean>>
         get() {
             val db = mysqliteopenhelper!!.readableDatabase
-            db.beginTransaction()
             val list = ArrayList<List<UnitStrokeBean>>()
             for (i in 1..12) {
                 val cursor = db.rawQuery("select type,lat,lon from unitstroke where type=" + i, null)
@@ -40,7 +40,6 @@ class MyDb(context: Context) {
                 list.add(ulist)
                 cursor.close()
             }
-            db.endTransaction()
             db.close()
             return list
         }
@@ -50,7 +49,6 @@ class MyDb(context: Context) {
     val allInfoLatlng: List<List<LatLng>>
         get() {
             val db = mysqliteopenhelper!!.readableDatabase
-            db.beginTransaction()
             val list = ArrayList<List<LatLng>>()
             for (i in 1..12) {
                 val cursor = db.rawQuery("select type,lat,lon from unitstroke where type=" + i, null)
@@ -65,14 +63,12 @@ class MyDb(context: Context) {
                 list.add(latLngs)
                 cursor.close()
             }
-            db.endTransaction()
             db.close()
             return list
         }
 
     fun someLatlng(type: Int): List<LatLng> {
         val db = mysqliteopenhelper!!.readableDatabase
-        db.beginTransaction()
         val latLngs = ArrayList<LatLng>()
         try {
             val cursor = db.rawQuery("select type,lat,lon from unitstroke where type=" + type, null)
@@ -83,12 +79,10 @@ class MyDb(context: Context) {
                 val latlng = LatLng(lat, lon)
                 latLngs.add(latlng)
             }
-            db.setTransactionSuccessful()
             cursor.close()
         } catch (e: Exception) {
             e.printStackTrace()
         } finally {
-            db.endTransaction()
             db.close()
         }
         return latLngs
@@ -104,11 +98,11 @@ class MyDb(context: Context) {
         val db = mysqliteopenhelper!!.writableDatabase
         db.beginTransaction()
         try {
-            val sqlitestatement=db.compileStatement("insert into unitstroke values (?,?,?,?);")
-            sqlitestatement.bindString(1,type)
-            sqlitestatement.bindString(2,typename)
-            sqlitestatement.bindString(3,lat)
-            sqlitestatement.bindString(4,lon)
+            val sqlitestatement = db.compileStatement("insert into unitstroke values (?,?,?,?);")
+            sqlitestatement.bindString(1, type)
+            sqlitestatement.bindString(2, typename)
+            sqlitestatement.bindString(3, lat)
+            sqlitestatement.bindString(4, lon)
             sqlitestatement.executeInsert()
             db.setTransactionSuccessful()
         } catch (e: Exception) {
@@ -117,4 +111,81 @@ class MyDb(context: Context) {
             db.endTransaction()
         }
     }
+
+    /**
+     * Unit 1级市
+     */
+    fun getUnitFirst(): List<UnitInfoBean> {
+        val list = ArrayList<UnitInfoBean>()
+        // 通过管理对象获取数据库
+        val db = mysqliteopenhelper!!.writableDatabase
+        try {
+            val cu = db.rawQuery("select unit_id,depname from UnitInfo where parentid='1501'", null)
+            while (cu.moveToNext()) {
+                val ub = UnitInfoBean()
+                ub.unit_id = cu.getString(0)
+                ub.depname = cu.getString(1)
+                list.add(ub)
+            }
+            cu.close()
+        } catch (e: Exception) {
+            // TODO Auto-generated catch block
+            e.printStackTrace()
+        }finally {
+            db.close()
+        }
+        return list
+    }
+
+    /**
+     * Unit 2级旗县区 3级乡镇街道 4级村委会
+     */
+    fun getUnitNext(parentid: String): List<UnitInfoBean> {
+        val list = ArrayList<UnitInfoBean>()
+        // 通过管理对象获取数据库
+        val db = mysqliteopenhelper!!.writableDatabase
+        try {
+            val cu = db.rawQuery("select unit_id,depname from UnitInfo where parentid=?", arrayOf(parentid))
+            while (cu.moveToNext()) {
+                val ub = UnitInfoBean()
+                ub.unit_id = cu.getString(0)
+                ub.depname = cu.getString(1)
+                list.add(ub)
+            }
+            cu.close()
+        } catch (e: Exception) {
+            // TODO Auto-generated catch block
+            e.printStackTrace()
+        }finally {
+            db.close()
+        }
+        return list
+    }
+
+    fun getSomePolygenInfo(polygenid: String): PolygenInfoBean {
+        val db = mysqliteopenhelper!!.readableDatabase
+        var polygeninfo = PolygenInfoBean()
+        try {
+            var cursor = db.rawQuery("select * from polygen where polygenid = '$polygenid'", null)
+            while (cursor.moveToNext()) {
+                var polygenid = cursor.getString(0)
+                var unit_id = cursor.getString(1)
+                var dpname = cursor.getString(2)
+                var gender = cursor.getString(3)
+                var hukou = cursor.getString(4)
+                var xstype = cursor.getString(5)
+                var country = cursor.getString(6)
+                var city = cursor.getString(7)
+                var total = cursor.getString(8)
+                polygeninfo = PolygenInfoBean(polygenid, unit_id, dpname, gender, hukou, xstype, country, city, total)
+            }
+            cursor.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            db.close()
+        }
+        return polygeninfo
+    }
+
 }
