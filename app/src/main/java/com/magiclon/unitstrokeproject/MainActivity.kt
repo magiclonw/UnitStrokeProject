@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             override fun getScrollableViewScrollPosition(scrollableView: View?, isSlidingUp: Boolean): Int {
                 return if (scrollableView is NestedScrollView) {
                     if (isSlidingUp) {
-                        scrollableView?.getScrollY()!!
+                        scrollableView.getScrollY()
                     } else {
                         var nsv: NestedScrollView = scrollableView
                         var child: View = nsv.getChildAt(0)
@@ -151,7 +151,7 @@ class MainActivity : AppCompatActivity() {
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { t ->
-                    setPieData(mChart_hukou, mParties, t.hukou.split(",")!!)
+                    setPieData(mChart_hukou, mParties, t.hukou.split(","))
                     setPieData(mChart_gander, mParties_gander, t.gender.split(","))
                     setPieData(mChart_type, mParties_type, t.xstype.split(","))
                     var totals = polygeninfo.total.split(",")
@@ -253,7 +253,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                InfoDialog(this@MainActivity, "总计：${total_cur}户\n\n所占比例：${(e?.y!! *100).toInt()}%\n\n${(total_cur*e?.y).toInt()}户")
+                InfoDialog(this@MainActivity, "总计：${total_cur}户\n\n所占比例：${(e?.y!! *100).toInt()}%\n\n${(total_cur* e.y).toInt()}户")
             }
         })
         mChart.setUsePercentValues(true)
