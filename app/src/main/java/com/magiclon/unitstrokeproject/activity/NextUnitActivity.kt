@@ -51,7 +51,7 @@ class NextUnitActivity : AppCompatActivity() {
     var mulriple = 1//倍数
     private var year = Calendar.getInstance().get(Calendar.YEAR) - 4//开始年份
     protected var mParties = arrayOf("农村", "城镇")
-    protected var mBarlabels = arrayOf("农业", "非农", "总计")
+    protected var mBarlabels = arrayOf("农村", "城镇", "总计")
     protected var mParties_gander = arrayOf("男", "女")
     protected var mParties_type = arrayOf("新申请", "现享受")
     private var values_hk = arrayOf("0.456", "0.534")
