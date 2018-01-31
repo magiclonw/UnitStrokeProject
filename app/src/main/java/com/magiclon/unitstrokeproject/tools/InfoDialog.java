@@ -44,24 +44,15 @@ public class InfoDialog {
         card = dialogv.findViewById(R.id.card);
         tv_content.setText(content);
 
-        tv_center.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                AnimatorSet animatorset=new AnimatorSet();
-                animatorset.playTogether(
-                        ObjectAnimator.ofFloat(card, "scaleX", 2, 1.5f, 1).setDuration(700),
-                        ObjectAnimator.ofFloat(card, "scaleY", 2, 1.5f, 1).setDuration(700),
-                        ObjectAnimator.ofFloat(card, "alpha", 0, 1).setDuration(700 * 3 / 2)
-
-                );
-                animatorset.start();
-            }
+        tv_center.setOnClickListener(view -> dialog.dismiss());
+        dialog.setOnShowListener(dialogInterface -> {
+            AnimatorSet animatorset=new AnimatorSet();
+            animatorset.playTogether(
+                    ObjectAnimator.ofFloat(card, "scaleX", 0.1f, 0.5f, 1).setDuration(500),
+                    ObjectAnimator.ofFloat(card, "scaleY", 0.1f, 0.5f, 1).setDuration(500),
+                    ObjectAnimator.ofFloat(card, "alpha", 0, 1).setDuration(500)
+            );
+            animatorset.start();
         });
         dialog.show();
     }

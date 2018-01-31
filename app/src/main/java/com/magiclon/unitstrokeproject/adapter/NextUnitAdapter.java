@@ -28,12 +28,9 @@ public class NextUnitAdapter extends RecyclerView.Adapter<NextUnitAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_nextunit, parent, false);
         final ViewHolder vh = new ViewHolder(view);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = vh.getLayoutPosition();
-                mOnItemClickListener.onItemClick(vh.itemView, pos);
-            }
+        view.setOnClickListener(view1 -> {
+            int pos = vh.getLayoutPosition();
+            mOnItemClickListener.onItemClick(vh.itemView, pos);
         });
         return vh;
     }

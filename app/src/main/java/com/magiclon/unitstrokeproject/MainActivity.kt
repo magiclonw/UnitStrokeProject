@@ -49,6 +49,7 @@ import rx.schedulers.Schedulers
 import java.util.*
 
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
     private var db: MyDb? = null
     private var mAMap: AMap? = null
@@ -365,7 +366,7 @@ class MainActivity : AppCompatActivity() {
         val xAxis = mChart.xAxis
         xAxis.granularity = 1f
         xAxis.setCenterAxisLabels(true)
-        xAxis.valueFormatter = IAxisValueFormatter { value, axis -> value.toInt().toString() }
+        xAxis.valueFormatter = IAxisValueFormatter { value, _ -> value.toInt().toString() }
 
         val leftAxis = mChart.axisLeft
         leftAxis.valueFormatter = LargeValueFormatter()
