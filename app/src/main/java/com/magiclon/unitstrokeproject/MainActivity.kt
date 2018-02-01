@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.amap.api.maps.AMap
@@ -19,12 +18,14 @@ import com.amap.api.maps.model.*
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.charts.RadarChart
 import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.LargeValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.interfaces.datasets.IRadarDataSet
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
@@ -37,6 +38,7 @@ import com.magiclon.unitstrokeproject.db.PolygenInfoBean
 import com.magiclon.unitstrokeproject.db.UnitInfoBean
 import com.magiclon.unitstrokeproject.tools.InfoDialog
 import com.magiclon.unitstrokeproject.tools.MyMarkerView
+import com.magiclon.unitstrokeproject.tools.RadarMarkerView
 import com.sothree.slidinguppanel.ScrollableViewHelper
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState
 import kotlinx.android.synthetic.main.activity_main.*
@@ -63,7 +65,9 @@ class MainActivity : AppCompatActivity() {
     protected var mParties = arrayOf("农村", "城镇")
     protected var mBarlabels = arrayOf("农村", "城镇", "总计")
     protected var mParties_gander = arrayOf("男", "女")
-    protected var mParties_type = arrayOf("新申请", "现享受")
+    protected var mParties_type = arrayOf("现享受", "新申请", "退保")
+    private var values_type1 = arrayOf(94f, 27f,26f)
+    private var values_type2 = arrayOf(82f, 7f,8f)
     private var subscription: Subscription? = null
     private var polygeninfo = PolygenInfoBean()
     private var unitinfos = ArrayList<UnitInfoBean>()
@@ -154,11 +158,11 @@ class MainActivity : AppCompatActivity() {
                 .subscribe { t ->
                     setPieData(mChart_hukou, mParties, t.hukou.split(","))
                     setPieData(mChart_gander, mParties_gander, t.gender.split(","))
-                    setPieData(mChart_type, mParties_type, t.xstype.split(","))
                     var totals = polygeninfo.total.split(",")
                     var cur_total = totals[0].toInt()
                     tv_name.text = polygeninfo.dpname
                     tv_count.text = "共 ${cur_total} 户"
+
                     var objectAnimator = ObjectAnimator.ofFloat(rl_main_top, View.SCALE_X, *floatArrayOf(1.02f, 1f))
                     objectAnimator.duration = 200
                     objectAnimator.repeatCount = 2
@@ -171,6 +175,15 @@ class MainActivity : AppCompatActivity() {
                         waveLoadingView.bottomTitle = "100%"
                         waveLoadingView.progressValue = 80
                         total_cur = total_hushi
+                        dashboard_view.setHeaderTest("百万元")
+                        val animator = ObjectAnimator.ofInt(dashboard_view, "mRealTimeValue",
+                                dashboard_view.velocity, 165)
+                        animator.duration = 1500
+                        animator.addUpdateListener { animator ->
+                            var value = animator.animatedValue as Int
+                            dashboard_view.velocity = value
+                        }
+                        animator.start()
                     } else {
                         nextadapter?.notifyDataSetChanged()
                         total_cur = cur_total
@@ -180,7 +193,17 @@ class MainActivity : AppCompatActivity() {
                         var percent = (cur_total * 100.0 / total_hushi).toInt()
                         waveLoadingView.bottomTitle = "$percent%"
                         waveLoadingView.progressValue = percent + 55
+                        dashboard_view.setHeaderTest("十万元")
+                        val animator = ObjectAnimator.ofInt(dashboard_view, "mRealTimeValue",
+                                dashboard_view.velocity, (Math.random() * 60 + 100).toInt())
+                        animator.duration = 1500
+                        animator.addUpdateListener { animator ->
+                            var value = animator.animatedValue as Int
+                            dashboard_view.velocity = value
+                        }
+                        animator.start()
                     }
+                    initRadarChart(radarchart)
                     subscription?.unsubscribe()
                 }
     }
@@ -227,17 +250,27 @@ class MainActivity : AppCompatActivity() {
                 isfirst = !isfirst
             }
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
+            dashboard_view.setHeaderTest("百万元")
+            val animator = ObjectAnimator.ofInt(dashboard_view, "mRealTimeValue",
+                    dashboard_view.velocity, 165)
+            animator.duration = 1500
+            animator.addUpdateListener { animator ->
+                var value = animator.animatedValue as Int
+                dashboard_view.velocity = value
+            }
+            animator.start()
             initPieChart(mChart_hukou, "低保类型统计")//低保类型
             initPieChart(mChart_gander, "男女比例统计")//男女比例
-            initPieChart(mChart_type, "享受类型统计")//享受比例
+
             initBarChart(mChart_year)
             setPieData(mChart_hukou, mParties, t?.hukou?.split(",")!!)
             setPieData(mChart_gander, mParties_gander, t.gender.split(","))
-            setPieData(mChart_type, mParties_type, t.xstype.split(","))
+
             setBarData(mChart_year, year, 5, mBarlabels, t.country.split(","), t.city.split(","), t.total.split(","))
             var totals = t.total.split(",")
             total_hushi = totals[0].toInt()
             total_cur = total_hushi
+            initRadarChart(radarchart)
             tv_name.text = t.dpname
             tv_count.text = "共 ${totals[0]} 户"
             waveLoadingView.centerTitle = "${total_hushi}户"
@@ -254,7 +287,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onValueSelected(e: Entry?, h: Highlight?) {
-                InfoDialog(this@MainActivity, "总计：${total_cur}户\n\n所占比例：${(e?.y!! *100).toInt()}%\n\n${(total_cur* e.y).toInt()}户")
+                InfoDialog(this@MainActivity, "总计：${total_cur}户\n\n所占比例：${(e?.y!! * 100).toInt()}%\n\n${(total_cur * e.y).toInt()}户")
             }
         })
         mChart.setUsePercentValues(true)
@@ -377,7 +410,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     //barchat数据来源
-    fun setBarData(mChart: BarChart, startYear: Int, groupCount: Int, labels: Array<String>, vararg values: List<String>) {
+    private fun setBarData(mChart: BarChart, startYear: Int, groupCount: Int, labels: Array<String>, vararg values: List<String>) {
 //        Log.e("-----","$startYear----------------")
         val groupSpace = 0.04f
         val barSpace = 0.03f // x4 DataSet
@@ -431,6 +464,93 @@ class MainActivity : AppCompatActivity() {
         // barData.getGroupWith(...) is a helper that calculates the width each group needs based on the provided parameters
         mChart.xAxis.axisMaximum = startYear + mChart.barData.getGroupWidth(groupSpace, barSpace) * groupCount
         mChart.groupBars(startYear.toFloat(), groupSpace, barSpace)
+        mChart.invalidate()
+    }
+
+    private fun initRadarChart(mChart: RadarChart) {
+        mChart.description.isEnabled = false
+
+        mChart.webLineWidth = 1f
+        mChart.webColor = Color.LTGRAY
+        mChart.webLineWidthInner = 1f
+        mChart.webColorInner = Color.LTGRAY
+        mChart.webAlpha = 100
+        mChart.animateY(1400)
+
+
+        val xAxis = mChart.xAxis
+        xAxis.textSize = 9f
+        xAxis.yOffset = 0f
+        xAxis.xOffset = 0f
+
+        xAxis.valueFormatter = IAxisValueFormatter { value, _ -> mParties_type[value.toInt() % mParties_type.size] }
+        xAxis.textColor = Color.GRAY
+
+        val yAxis = mChart.yAxis
+        yAxis.setLabelCount(6, true)
+        yAxis.textSize = 9f
+        yAxis.axisMinimum = 0f
+        yAxis.axisMaximum = 100f
+        yAxis.setDrawLabels(false)
+
+        val l = mChart.legend
+        l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+        l.horizontalAlignment = Legend.LegendHorizontalAlignment.CENTER
+        l.orientation = Legend.LegendOrientation.HORIZONTAL
+        l.setDrawInside(false)
+        l.xEntrySpace = 7f
+        l.yEntrySpace = 5f
+        l.textColor = Color.GRAY
+        setRadarData(mChart,total_cur)
+    }
+    private fun setRadarData(mChart: RadarChart,total:Int){
+
+        // create a custom MarkerView (extend MarkerView) and specify the layout
+        // to use for it
+        val mv = RadarMarkerView(this, R.layout.custom_marker_view,total)
+        mv.chartView = mChart // For bounds control
+        mChart.marker = mv // Set the marker to the chart
+        val cnt = 3
+
+        val entries1 = java.util.ArrayList<RadarEntry>()
+        val entries2 = java.util.ArrayList<RadarEntry>()
+
+        // NOTE: The order of the entries when being added to the entries array determines their position around the center of
+        // the chart.
+        for (i in 0 until cnt) {
+
+            entries1.add(RadarEntry(values_type2[i]))
+            entries2.add(RadarEntry(values_type1[i]))
+        }
+
+        val set1 = RadarDataSet(entries1, "去年")
+        set1.color = Color.rgb(103, 110, 129)
+        set1.fillColor = Color.rgb(103, 110, 129)
+        set1.setDrawFilled(true)
+        set1.fillAlpha = 180
+        set1.lineWidth = 2f
+        set1.isDrawHighlightCircleEnabled = true
+        set1.setDrawHighlightIndicators(false)
+
+        val set2 = RadarDataSet(entries2, "今年")
+        set2.color = Color.rgb(121, 162, 175)
+        set2.fillColor = Color.rgb(121, 162, 175)
+        set2.setDrawFilled(true)
+        set2.fillAlpha = 180
+        set2.lineWidth = 2f
+        set2.isDrawHighlightCircleEnabled = true
+        set2.setDrawHighlightIndicators(false)
+
+        val sets = java.util.ArrayList<IRadarDataSet>()
+        sets.add(set1)
+        sets.add(set2)
+
+        val data = RadarData(sets)
+        data.setValueTextSize(8f)
+        data.setDrawValues(false)
+        data.setValueTextColor(Color.GRAY)
+
+        mChart.data = data
         mChart.invalidate()
     }
 

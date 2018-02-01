@@ -43,7 +43,7 @@
                     android:layout_centerInParent="true"
                     android:background="@color/colorPrimarya"
                     android:padding="5dp"
-                    android:text="呼市低保统计"
+                    android:text="社会救助决策支持平台"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
 
