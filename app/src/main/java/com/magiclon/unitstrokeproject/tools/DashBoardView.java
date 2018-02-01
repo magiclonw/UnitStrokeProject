@@ -108,7 +108,7 @@ public class DashBoardView extends View {
         float[] point2 = getCoordinatePoint(mRadius, mStartAngle + mSweepAngle);
         int height = (int) Math.max(point1[1] + mPadding + mStrokeWidth * 2,
                 point2[1] + mPadding + mStrokeWidth * 2);
-        setMeasuredDimension(width, height + getPaddingTop() + getPaddingBottom());
+        setMeasuredDimension(width, height);
 
         mCenterX = mCenterY = getMeasuredWidth() / 2f;
         mRectFArc.set(

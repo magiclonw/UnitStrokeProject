@@ -14,7 +14,7 @@
     sothree:umanoParallaxOffset="100dp"
     sothree:umanoScrollableView="@+id/nsv_main"
     sothree:umanoShadowHeight="4dp"
-    tools:context="com.magiclon.unitstrokeproject.MainActivity">
+    tools:context="com.magiclon.unitstrokeproject.activity.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerInParent="true"
-                    android:background="@color/colorPrimarya"
+                    android:background="@color/color_dark_lighttranse"
                     android:padding="5dp"
                     android:text="社会救助决策支持平台"
                     android:textColor="@color/white"

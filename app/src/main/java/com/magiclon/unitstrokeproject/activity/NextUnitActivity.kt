@@ -440,6 +440,7 @@ class NextUnitActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        ImmersionBar.with(this).destroy()
         waveLoadingView.endAnimation()
     }
 }

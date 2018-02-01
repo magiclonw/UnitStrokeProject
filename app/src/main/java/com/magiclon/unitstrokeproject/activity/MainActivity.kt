@@ -1,4 +1,4 @@
-package com.magiclon.unitstrokeproject
+package com.magiclon.unitstrokeproject.activity
 
 import android.animation.ObjectAnimator
 import android.content.Intent
@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.amap.api.maps.AMap
@@ -30,7 +32,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.MPPointF
 import com.gyf.barlibrary.ImmersionBar
-import com.magiclon.unitstrokeproject.activity.NextUnitActivity
+import com.magiclon.unitstrokeproject.R
 import com.magiclon.unitstrokeproject.adapter.ExamAdapter
 import com.magiclon.unitstrokeproject.adapter.NextUnitAdapter
 import com.magiclon.unitstrokeproject.db.MyDb
@@ -66,8 +68,8 @@ class MainActivity : AppCompatActivity() {
     protected var mBarlabels = arrayOf("农村", "城镇", "总计")
     protected var mParties_gander = arrayOf("男", "女")
     protected var mParties_type = arrayOf("现享受", "新申请", "退保")
-    private var values_type1 = arrayOf(94f, 27f,26f)
-    private var values_type2 = arrayOf(82f, 7f,8f)
+    private var values_type1 = arrayOf(94f, 27f, 26f)
+    private var values_type2 = arrayOf(82f, 7f, 8f)
     private var subscription: Subscription? = null
     private var polygeninfo = PolygenInfoBean()
     private var unitinfos = ArrayList<UnitInfoBean>()
@@ -81,8 +83,6 @@ class MainActivity : AppCompatActivity() {
         map.onCreate(savedInstanceState)
         db = MyDb(this)
         initAmap()
-        initData()
-        addOverLay(true)
     }
 
     fun initAmap() {//初始化地图
@@ -94,6 +94,7 @@ class MainActivity : AppCompatActivity() {
         var limitbounds = LatLngBounds(southwestLatLng, northeastLatLng)
         mAMap?.setMapStatusLimits(limitbounds)
         mAMap?.uiSettings?.logoPosition = AMapOptions.LOGO_POSITION_BOTTOM_RIGHT
+        mAMap?.uiSettings?.zoomPosition=AMapOptions.ZOOM_POSITION_RIGHT_CENTER
         mAMap?.setOnMapClickListener { latlng ->
             polygons.forEachIndexed { _, polygon ->
                 if (polygon.contains(latlng)) {
@@ -101,6 +102,10 @@ class MainActivity : AppCompatActivity() {
                     return@setOnMapClickListener
                 }
             }
+        }
+        mAMap?.setOnMapLoadedListener {
+            initData()
+            addOverLay(true)
         }
 
     }
@@ -145,6 +150,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("total_cur", total_cur)
             startActivity(intent)
         }
+
     }
 
     private fun changeData(polygonid: String) {
@@ -220,11 +226,11 @@ class MainActivity : AppCompatActivity() {
                 if (type) {
                     val polygonOptions = PolygonOptions()
                     polygonOptions.addAll(mlatlngs[i])
-                    var strokewidth = 3
+                    var strokewidth = 3f
                     if (i == 0) {
-                        strokewidth = 5
+                        strokewidth = 5f
                     }
-                    polygonOptions.fillColor(colors[i]).strokeWidth(strokewidth.toFloat()).strokeColor(Color.RED)
+                    polygonOptions.fillColor(colors[i]).strokeWidth(strokewidth).strokeColor(Color.RED)
                     var polygen = mAMap?.addPolygon(polygonOptions)
                     if (polygons.size != 11 && i != 0) {
                         polygons.add(polygen!!)
@@ -242,7 +248,7 @@ class MainActivity : AppCompatActivity() {
                     // 向地图上添加 TileOverlayOptions 类对象
                     mAMap?.addTileOverlay(tileOverlayOptions)
                 }
-                Thread.sleep(50)
+                Thread.sleep(100)
             }
             if (isfirst) {
                 polygeninfo = db?.getSomePolygenInfo("Polygon1")!!
@@ -501,13 +507,14 @@ class MainActivity : AppCompatActivity() {
         l.xEntrySpace = 7f
         l.yEntrySpace = 5f
         l.textColor = Color.GRAY
-        setRadarData(mChart,total_cur)
+        setRadarData(mChart, total_cur)
     }
-    private fun setRadarData(mChart: RadarChart,total:Int){
+
+    private fun setRadarData(mChart: RadarChart, total: Int) {
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
-        val mv = RadarMarkerView(this, R.layout.custom_marker_view,total)
+        val mv = RadarMarkerView(this, R.layout.custom_marker_view, total)
         mv.chartView = mChart // For bounds control
         mChart.marker = mv // Set the marker to the chart
         val cnt = 3

@@ -1,5 +1,6 @@
 package com.magiclon.unitstrokeproject.activity
 
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.magiclon.unitstrokeproject.R
@@ -26,7 +27,11 @@ class PeopleListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_peoplelist)
-        ImmersionBar.with(this).statusBarColor(R.color.white).keyboardEnable(true, WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)?.statusBarDarkFont(true, 1f)?.init()
+        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP){//沉浸栏手持机4.4版本会引起不能滑动问题
+            ImmersionBar.with(this).statusBarColor(R.color.white).keyboardEnable(true, WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)?.statusBarDarkFont(true)?.navigationBarColor(R.color.white)?.init()
+        }else{
+            ImmersionBar.with(this).titleBar(toolbar).statusBarColor(R.color.white).keyboardEnable(true, WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)?.statusBarDarkFont(true)?.navigationBarColor(R.color.white)?.init()
+        }
         depname = intent.extras.getString("depname")
         initEvents()
         initData()

@@ -30,17 +30,17 @@ class PeopleListFragment : Fragment {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mContext=activity
+        mContext = activity
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        view=inflater?.inflate(R.layout.list_layout,container,false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        view = inflater.inflate(R.layout.list_layout, container, false)
         initView()
         return view
     }
 
     private fun initView() {
-        view?.list_view?.layoutManager=LinearLayoutManager(mContext)
-        view?.list_view?.adapter=PeopleAdapter(type)
+        view?.list_view?.layoutManager = LinearLayoutManager(mContext)
+        view?.list_view?.adapter = PeopleAdapter(type)
     }
 }
