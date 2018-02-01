@@ -39,7 +39,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.ViewHolder
             holder.iv_peoplelist_neworxs.setImageResource(R.mipmap.xiangshou);
         }
         holder.iv_peoplelist_head.setImageResource(heads[(int) (Math.random() * 4)]);
-        holder.tv_peoplelist_info.setText("姓名：" + names[(int) (Math.random() * 10)] + " 　　身份证号：150102***" + (int) (Math.random() * 4000 + 1000));
+        holder.tv_peoplelist_info.setText("姓名：" + names[(int) (Math.random() * 10)] + " 　身份证号：150102***" + (int) (Math.random() * 4000 + 1000));
         holder.tv_peoplelist_money.setText("低保金额：" + (int) (Math.random() * 1000) + "元");
         holder.tv_peoplelist_type.setText(type_hk[(int) (Math.random() * 2)]);
         holder.tv_peoplelist_xstime.setText("享受时间：201" + (int) (Math.random() * 8) + "-" + (int) (Math.random() * 12) + "-" + (int) (Math.random() * 29));
