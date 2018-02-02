@@ -2,8 +2,11 @@ package com.magiclon.unitstrokeproject.activity
 
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Environment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
@@ -29,6 +32,7 @@ import com.magiclon.unitstrokeproject.R
 import com.magiclon.unitstrokeproject.adapter.NextUnitAdapter
 import com.magiclon.unitstrokeproject.db.MyDb
 import com.magiclon.unitstrokeproject.db.UnitInfoBean
+import com.magiclon.unitstrokeproject.tools.BitmapUtil
 import com.magiclon.unitstrokeproject.tools.InfoDialog
 import com.magiclon.unitstrokeproject.tools.MyMarkerView
 import com.magiclon.unitstrokeproject.tools.RadarMarkerView
@@ -39,6 +43,8 @@ import rx.Observable
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.File
+import java.io.FileOutputStream
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -99,6 +105,15 @@ class NextUnitActivity : AppCompatActivity() {
             intent.putExtra("unit_id", unit_id)
             intent.putExtra("depname", depname)
             startActivity(intent)
+        }
+        iv_downloadpdf.setOnClickListener {
+            iv_next_more.visibility=View.INVISIBLE
+            iv_next_back.visibility=View.INVISIBLE
+            iv_downloadpdf.visibility=View.INVISIBLE
+            BitmapUtil.saveViewBitmap2File("$depname.png",rl_next,this)
+            iv_next_more.visibility=View.VISIBLE
+            iv_next_back.visibility=View.VISIBLE
+            iv_downloadpdf.visibility=View.VISIBLE
         }
     }
 

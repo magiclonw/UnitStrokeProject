@@ -2,6 +2,7 @@ package com.magiclon.unitstrokeproject.activity
 
 import android.animation.ObjectAnimator
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -11,6 +12,7 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
@@ -38,6 +40,7 @@ import com.magiclon.unitstrokeproject.adapter.NextUnitAdapter
 import com.magiclon.unitstrokeproject.db.MyDb
 import com.magiclon.unitstrokeproject.db.PolygenInfoBean
 import com.magiclon.unitstrokeproject.db.UnitInfoBean
+import com.magiclon.unitstrokeproject.tools.BitmapUtil
 import com.magiclon.unitstrokeproject.tools.InfoDialog
 import com.magiclon.unitstrokeproject.tools.MyMarkerView
 import com.magiclon.unitstrokeproject.tools.RadarMarkerView
@@ -81,6 +84,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ImmersionBar.with(this).titleBar(toolbar, false).transparentBar()?.fullScreen(false)?.navigationBarColor(R.color.white)?.keyboardEnable(true, WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)?.statusBarDarkFont(true, 0.2f)?.init()
         map.onCreate(savedInstanceState)
+        var  manager = this.windowManager
+		var  outMetrics =  DisplayMetrics()
+		manager.defaultDisplay.getMetrics(outMetrics)
+		var width = outMetrics.widthPixels
+		var  height = outMetrics.heightPixels
+        Log.e("*****","$width****$height")
         db = MyDb(this)
         initAmap()
     }
@@ -94,7 +103,7 @@ class MainActivity : AppCompatActivity() {
         var limitbounds = LatLngBounds(southwestLatLng, northeastLatLng)
         mAMap?.setMapStatusLimits(limitbounds)
         mAMap?.uiSettings?.logoPosition = AMapOptions.LOGO_POSITION_BOTTOM_RIGHT
-        mAMap?.uiSettings?.zoomPosition=AMapOptions.ZOOM_POSITION_RIGHT_CENTER
+        mAMap?.uiSettings?.zoomPosition = AMapOptions.ZOOM_POSITION_RIGHT_CENTER
         mAMap?.setOnMapClickListener { latlng ->
             polygons.forEachIndexed { _, polygon ->
                 if (polygon.contains(latlng)) {
@@ -150,7 +159,14 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("total_cur", total_cur)
             startActivity(intent)
         }
-
+        iv_downloadpdf.setOnClickListener {
+            iv_downloadpdf.visibility = View.INVISIBLE
+            iv_seemore.visibility = View.INVISIBLE
+            BitmapUtil.saveViewBitmap2File("${polygeninfo.dpname}.png", dragView, this)
+            tv_name.text = "${polygeninfo.dpname}"
+            iv_downloadpdf.visibility = View.VISIBLE
+            iv_seemore.visibility = View.VISIBLE
+        }
     }
 
     private fun changeData(polygonid: String) {
