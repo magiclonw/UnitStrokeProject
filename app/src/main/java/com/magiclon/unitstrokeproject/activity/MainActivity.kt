@@ -84,12 +84,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         ImmersionBar.with(this).titleBar(toolbar, false).transparentBar()?.fullScreen(false)?.navigationBarColor(R.color.white)?.keyboardEnable(true, WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)?.statusBarDarkFont(true, 0.2f)?.init()
         map.onCreate(savedInstanceState)
-        var  manager = this.windowManager
-		var  outMetrics =  DisplayMetrics()
-		manager.defaultDisplay.getMetrics(outMetrics)
-		var width = outMetrics.widthPixels
-		var  height = outMetrics.heightPixels
-        Log.e("*****","$width****$height")
         db = MyDb(this)
         initAmap()
     }
@@ -433,7 +427,6 @@ class MainActivity : AppCompatActivity() {
 
     //barchat数据来源
     private fun setBarData(mChart: BarChart, startYear: Int, groupCount: Int, labels: Array<String>, vararg values: List<String>) {
-//        Log.e("-----","$startYear----------------")
         val groupSpace = 0.04f
         val barSpace = 0.03f // x4 DataSet
         val barWidth = 0.29f // x4 DataSet
@@ -606,10 +599,10 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onDestroy() {
         super.onDestroy()
-        map?.onDestroy()
         ImmersionBar.with(this).destroy()
         polygons.clear()
         waveLoadingView.endAnimation()
+        map?.onDestroy()
     }
 
     override fun onBackPressed() {

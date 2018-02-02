@@ -41,7 +41,7 @@ object BitmapUtil {
                 View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0,
                 View.MeasureSpec.UNSPECIFIED))
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-        bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.ARGB_8888)
+        bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.RGB_565)
         val c = Canvas(bitmap)
         c.drawColor(Color.WHITE)
         view.draw(c)
