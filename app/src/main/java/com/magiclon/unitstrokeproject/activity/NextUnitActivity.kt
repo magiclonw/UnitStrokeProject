@@ -110,14 +110,14 @@ class NextUnitActivity : AppCompatActivity() {
             if(unit_id.length < 12){
                 iv_next_back.visibility=View.INVISIBLE
                 iv_downloadpdf.visibility=View.INVISIBLE
-                BitmapUtil.saveViewBitmap2File("$depname.png",rl_next,this)
+                BitmapUtil.saveToPdf("$depname.pdf",rl_next,this)
                 iv_next_back.visibility=View.VISIBLE
                 iv_downloadpdf.visibility=View.VISIBLE
             }else{
                 iv_next_more.visibility=View.INVISIBLE
                 iv_next_back.visibility=View.INVISIBLE
                 iv_downloadpdf.visibility=View.INVISIBLE
-                BitmapUtil.saveViewBitmap2File("$depname.png",rl_next,this)
+                BitmapUtil.saveToPdf("$depname.pdf",rl_next,this)
                 iv_next_more.visibility=View.VISIBLE
                 iv_next_back.visibility=View.VISIBLE
                 iv_downloadpdf.visibility=View.VISIBLE

@@ -156,7 +156,7 @@ class MainActivity : AppCompatActivity() {
         iv_downloadpdf.setOnClickListener {
             iv_downloadpdf.visibility = View.INVISIBLE
             iv_seemore.visibility = View.INVISIBLE
-            BitmapUtil.saveViewBitmap2File("${polygeninfo.dpname}.png", dragView, this)
+            BitmapUtil.saveToPdf("${polygeninfo.dpname}.pdf", dragView, this)
             tv_name.text = "${polygeninfo.dpname}"
             iv_downloadpdf.visibility = View.VISIBLE
             iv_seemore.visibility = View.VISIBLE
