@@ -1,26 +1,25 @@
 package com.magiclon.unitstrokeproject.tools
 
-import android.app.Dialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Environment
-import android.util.Log
 import android.view.View
 import android.view.Window
+import com.itextpdf.text.Document
+import com.itextpdf.text.Image
+import com.itextpdf.text.RectangleReadOnly
+import com.itextpdf.text.pdf.PdfWriter
 import es.dmoral.toasty.Toasty
 import rx.Observable
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import android.R.attr.path
-import com.itextpdf.text.*
-import com.itextpdf.text.pdf.PdfWriter
-import java.io.ByteArrayOutputStream
 
 
 /**

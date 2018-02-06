@@ -2,7 +2,6 @@ package com.magiclon.unitstrokeproject.activity
 
 import android.animation.ObjectAnimator
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -11,9 +10,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.amap.api.maps.AMap
@@ -46,6 +42,7 @@ import com.magiclon.unitstrokeproject.tools.MyMarkerView
 import com.magiclon.unitstrokeproject.tools.RadarMarkerView
 import com.sothree.slidinguppanel.ScrollableViewHelper
 import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState
+import es.dmoral.toasty.Toasty
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.main_dragview.*
 import me.itangqi.waveloadingview.WaveLoadingView
@@ -79,6 +76,7 @@ class MainActivity : AppCompatActivity() {
     private var colors = intArrayOf(Color.argb(0, 0, 0, 0), Color.argb(120, 250, 5, 22), Color.argb(120, 155, 5, 251), Color.argb(120, 155, 5, 251), Color.argb(120, 51, 5, 251), Color.argb(120, 5, 167, 251), Color.argb(120, 5, 237, 251), Color.argb(120, 5, 237, 251), Color.argb(120, 171, 249, 239), Color.argb(120, 5, 251, 28), Color.argb(120, 251, 248, 5), Color.argb(120, 251, 150, 5))
     private var total_hushi = 0 //呼市的户数量
     private var total_cur = 0 //当前选中的区的户数量
+    private var mPressedTime: Long = 0//双击退出
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -608,6 +606,12 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() {
         if (sliding_layout != null && (sliding_layout.panelState === PanelState.EXPANDED || sliding_layout.panelState === PanelState.ANCHORED)) {
             sliding_layout.panelState = PanelState.COLLAPSED
+            return
+        }
+        var mNowTime: Long = System.currentTimeMillis()//获取第一次按键时间
+        if ((mNowTime - mPressedTime) > 2000) {//比较两次按键时间差
+            Toasty.info(this, "再按一次退出程序").show()
+            mPressedTime = mNowTime
         } else {
             super.onBackPressed()
         }

@@ -7,6 +7,7 @@ import android.view.WindowManager
 import com.bumptech.glide.Glide
 import com.gyf.barlibrary.ImmersionBar
 import com.magiclon.unitstrokeproject.R
+import junit.framework.Test
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
