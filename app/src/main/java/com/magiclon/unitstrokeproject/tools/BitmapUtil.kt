@@ -101,8 +101,8 @@ object BitmapUtil {
         subscription = Observable.create(Observable.OnSubscribe<Boolean> { t ->
             var document: Document? = null
             var writer: PdfWriter? = null
-            var baos:ByteArrayOutputStream?=null
-            var fileoutputstream:FileOutputStream?=null
+            var baos: ByteArrayOutputStream? = null
+            var fileoutputstream: FileOutputStream? = null
             try {
                 val sdRoot = File(Environment.getExternalStorageDirectory().absolutePath + "/社会救助决策支持平台")
                 if (!sdRoot.exists()) {
@@ -110,12 +110,17 @@ object BitmapUtil {
                 }
                 val file = File(sdRoot, filename)
                 fileoutputstream = FileOutputStream(file)
-                document = Document(RectangleReadOnly(bitmap.width.toFloat(), bitmap.height.toFloat()), 0f, 0f, 0f, 0f)
-                writer = PdfWriter.getInstance(document, fileoutputstream)
-                document.open()
                 baos = ByteArrayOutputStream()
                 bitmap?.compress(Bitmap.CompressFormat.PNG, 100, baos)
                 val image = Image.getInstance(baos.toByteArray())
+                if (bitmap.height > 14400) {
+                    document = Document(RectangleReadOnly(bitmap.width.toFloat() * (14399.0f / bitmap.height.toFloat()), 14399f), 0f, 0f, 0f, 0f)
+                    image.scaleAbsolute(bitmap.width.toFloat() * (14399.0f / bitmap.height.toFloat()), 14399f)
+                } else {
+                    document = Document(RectangleReadOnly(bitmap.width.toFloat(), bitmap.height.toFloat()), 0f, 0f, 0f, 0f)
+                }
+                writer = PdfWriter.getInstance(document, fileoutputstream)
+                document.open()
                 document.add(image)
                 document.newPage()
                 t.onNext(true)

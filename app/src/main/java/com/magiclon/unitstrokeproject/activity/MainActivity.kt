@@ -136,6 +136,7 @@ class MainActivity : AppCompatActivity() {
             changeData("Polygon1")
         }
         iv_change.setOnClickListener {
+            iv_change.isClickable=false
             type_poly = !type_poly
             addOverLay(type_poly)
         }
@@ -263,6 +264,7 @@ class MainActivity : AppCompatActivity() {
                 t?.onNext(polygeninfo)
                 isfirst = !isfirst
             }
+            iv_change.isClickable=true
         }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe { t ->
             dashboard_view.setHeaderTest("百万元")
             val animator = ObjectAnimator.ofInt(dashboard_view, "mRealTimeValue",
