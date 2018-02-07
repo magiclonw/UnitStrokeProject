@@ -1,8 +1,11 @@
+import java.text.SimpleDateFormat
+
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'AndResGuard'
 
 android {
     signingConfigs {
@@ -26,12 +29,12 @@ android {
 
         ndk {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
-            abiFilters "armeabi", "armeabi-v7a","x86", "arm64-v8a", "x86_64"
+            abiFilters "armeabi", "armeabi-v7a", "x86", "arm64-v8a", "x86_64"
         }
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
@@ -68,10 +71,60 @@ dependencies {
 
     implementation 'com.flaviofaria:kenburnsview:1.0.7'//可动图背景
     implementation 'com.github.bumptech.glide:glide:4.5.0'
-    compile 'com.github.GrenderG:Toasty:1.2.8'//toast
+    implementation 'com.github.GrenderG:Toasty:1.2.8'//toast
 
-    compile 'com.itextpdf:itextg:5.5.10'//pdf处理库
+    implementation 'com.itextpdf:itextg:5.5.10'//pdf处理库
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.tencent.mm:AndResGuard-gradle-plugin:1.2.11'
+    }
+}
+
+andResGuard {
+    // mappingFile = file("./resource_mapping.txt")
+    mappingFile = null
+    // It will be invalid when you sign apk with schemeV2
+    use7zip = true
+    useSign = true
+    // it will keep the origin path of your resources when it's true
+    keepRoot = false
+
+    whiteList = [
+            // your icon
+            "R.mipmap.ic_launcher",
+            "R.mipmap.ic_launcher_round"
+
+    ]
+    compressFilePattern = [
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+            "resources.arsc"
+    ]
+    sevenzip {
+        artifact = 'com.tencent.mm:SevenZip:1.2.11'
+        //path = "/usr/local/bin/7za"
+    }
+
+    /**
+     * Optional: if finalApkBackupPath is null, AndResGuard will overwrite final apk
+     * to the path which assemble[Task] write to
+     **/
+    SimpleDateFormat sdf_convert = new SimpleDateFormat("yyyyMMddHHmmss")
+    finalApkBackupPath = "${project.rootDir}/社会救助决策支持平台-${sdf_convert.format(new Date())}.apk"
+
+    /**
+     * Optional: Specifies the name of the message digest algorithm to user when digesting the entries of JAR file
+     * Only works in V1signing, default value is "SHA1"
+     **/
+    digestalg = "SHA-256"
 }

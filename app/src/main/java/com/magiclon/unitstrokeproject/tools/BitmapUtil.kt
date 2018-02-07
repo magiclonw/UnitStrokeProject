@@ -90,11 +90,11 @@ object BitmapUtil {
                 View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0,
                 View.MeasureSpec.UNSPECIFIED))
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.RGB_565)
+        val c = Canvas(bitmap)
+        c.drawColor(Color.WHITE)
+        view.draw(c)
         subscription = Observable.create(Observable.OnSubscribe<Boolean> { t ->
-            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.RGB_565)
-            val c = Canvas(bitmap)
-            c.drawColor(Color.WHITE)
-            view.draw(c)
             var document: Document? = null
             var writer: PdfWriter? = null
             var baos: ByteArrayOutputStream? = null

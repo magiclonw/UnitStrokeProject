@@ -20,9 +20,6 @@ import java.util.ArrayList
 class MyDb(context: Context) {
     private var mysqliteopenhelper: MySqliteOpenHelper? = null
 
-    //        db.execSQL("delete from unitstroke where type='1'");
-    //            Log.e("--","select type,lat,lon from unitstroke where type="+i);
-    //                Log.e("-**-",unitStrokeBean.toString());
     val allInfo: List<List<UnitStrokeBean>>
         get() {
             val db = mysqliteopenhelper!!.readableDatabase
@@ -129,7 +126,6 @@ class MyDb(context: Context) {
             }
             cu.close()
         } catch (e: Exception) {
-            // TODO Auto-generated catch block
             e.printStackTrace()
         }finally {
             db.close()
@@ -154,7 +150,6 @@ class MyDb(context: Context) {
             }
             cu.close()
         } catch (e: Exception) {
-            // TODO Auto-generated catch block
             e.printStackTrace()
         }finally {
             db.close()
