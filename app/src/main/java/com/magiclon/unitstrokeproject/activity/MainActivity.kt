@@ -64,16 +64,16 @@ class MainActivity : AppCompatActivity() {
     private var adapter: ExamAdapter? = null
     private var nextadapter: NextUnitAdapter? = null
     private var year = Calendar.getInstance().get(Calendar.YEAR) - 4
-    protected var mParties = arrayOf("农村", "城镇")
-    protected var mBarlabels = arrayOf("农村", "城镇", "总计")
-    protected var mParties_gander = arrayOf("男", "女")
-    protected var mParties_type = arrayOf("现享受", "新申请", "退保")
-    private var values_type1 = arrayOf(94f, 27f, 26f)
-    private var values_type2 = arrayOf(82f, 7f, 8f)
+    private val mParties = arrayOf("农村", "城镇")
+    private val mBarlabels = arrayOf("农村", "城镇", "总计")
+    private val mParties_gander = arrayOf("男", "女")
+    private val mParties_type = arrayOf("现享受", "新申请", "退保")
+    private val values_type1 = arrayOf(94f, 27f, 26f)
+    private val values_type2 = arrayOf(82f, 7f, 8f)
     private var subscription: Subscription? = null
     private var polygeninfo = PolygenInfoBean()
     private var unitinfos = ArrayList<UnitInfoBean>()
-    private var colors = intArrayOf(Color.argb(0, 0, 0, 0), Color.argb(120, 250, 5, 22), Color.argb(120, 155, 5, 251), Color.argb(120, 155, 5, 251), Color.argb(120, 51, 5, 251), Color.argb(120, 5, 167, 251), Color.argb(120, 5, 237, 251), Color.argb(120, 5, 237, 251), Color.argb(120, 171, 249, 239), Color.argb(120, 5, 251, 28), Color.argb(120, 251, 248, 5), Color.argb(120, 251, 150, 5))
+    private val colors = intArrayOf(Color.argb(0, 0, 0, 0), Color.argb(120, 250, 5, 22), Color.argb(120, 155, 5, 251), Color.argb(120, 155, 5, 251), Color.argb(120, 51, 5, 251), Color.argb(120, 5, 167, 251), Color.argb(120, 5, 237, 251), Color.argb(120, 5, 237, 251), Color.argb(120, 171, 249, 239), Color.argb(120, 5, 251, 28), Color.argb(120, 251, 248, 5), Color.argb(120, 251, 150, 5))
     private var total_hushi = 0 //呼市的户数量
     private var total_cur = 0 //当前选中的区的户数量
     private var mPressedTime: Long = 0//双击退出
@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         val southwestLatLng = LatLng(39.25, 110.27)
         // 东北坐标
         val northeastLatLng = LatLng(41.8, 112.5)
-        var limitbounds = LatLngBounds(southwestLatLng, northeastLatLng)
+        val limitbounds = LatLngBounds(southwestLatLng, northeastLatLng)
         mAMap?.setMapStatusLimits(limitbounds)
         mAMap?.uiSettings?.logoPosition = AMapOptions.LOGO_POSITION_BOTTOM_RIGHT
         mAMap?.uiSettings?.zoomPosition = AMapOptions.ZOOM_POSITION_RIGHT_CENTER
@@ -123,8 +123,8 @@ class MainActivity : AppCompatActivity() {
                     if (isSlidingUp) {
                         scrollableView.getScrollY()
                     } else {
-                        var nsv: NestedScrollView = scrollableView
-                        var child: View = nsv.getChildAt(0)
+                        val nsv: NestedScrollView = scrollableView
+                        val child: View = nsv.getChildAt(0)
                         (child.bottom - (nsv.height + nsv.scrollY))
                     }
                 } else {
@@ -146,7 +146,7 @@ class MainActivity : AppCompatActivity() {
         rv_qulist.itemAnimator = DefaultItemAnimator()
         rv_qulist.adapter = nextadapter
         nextadapter?.setOnItemClickListener { _, position ->
-            var intent = Intent(this, NextUnitActivity::class.java)
+            val intent = Intent(this, NextUnitActivity::class.java)
             intent.putExtra("unit_id", unitinfos[position].unit_id)
             intent.putExtra("depname", unitinfos[position].depname)
             intent.putExtra("total_cur", total_cur)
@@ -174,12 +174,12 @@ class MainActivity : AppCompatActivity() {
                 .subscribe { t ->
                     setPieData(mChart_hukou, mParties, t.hukou.split(","))
                     setPieData(mChart_gander, mParties_gander, t.gender.split(","))
-                    var totals = polygeninfo.total.split(",")
-                    var cur_total = totals[0].toInt()
+                    val totals = polygeninfo.total.split(",")
+                    val cur_total = totals[0].toInt()
                     tv_name.text = polygeninfo.dpname
                     tv_count.text = "共 ${cur_total} 户"
 
-                    var objectAnimator = ObjectAnimator.ofFloat(rl_main_top, View.SCALE_X, *floatArrayOf(1.02f, 1f))
+                    val objectAnimator = ObjectAnimator.ofFloat(rl_main_top, View.SCALE_X, *floatArrayOf(1.02f, 1f))
                     objectAnimator.duration = 200
                     objectAnimator.repeatCount = 2
                     objectAnimator.start()
@@ -196,7 +196,7 @@ class MainActivity : AppCompatActivity() {
                                 dashboard_view.velocity, 165)
                         animator.duration = 1500
                         animator.addUpdateListener { animator ->
-                            var value = animator.animatedValue as Int
+                            val value = animator.animatedValue as Int
                             dashboard_view.velocity = value
                         }
                         animator.start()
@@ -206,7 +206,7 @@ class MainActivity : AppCompatActivity() {
                         rv_qulist.visibility = View.VISIBLE
                         ll_main_unit.visibility = View.VISIBLE
                         waveLoadingView.centerTitle = "${cur_total}户"
-                        var percent = (cur_total * 100.0 / total_hushi).toInt()
+                        val percent = (cur_total * 100.0 / total_hushi).toInt()
                         waveLoadingView.bottomTitle = "$percent%"
                         waveLoadingView.progressValue = percent + 55
                         dashboard_view.setHeaderTest("十万元")
@@ -214,7 +214,7 @@ class MainActivity : AppCompatActivity() {
                                 dashboard_view.velocity, (Math.random() * 60 + 100).toInt())
                         animator.duration = 1500
                         animator.addUpdateListener { animator ->
-                            var value = animator.animatedValue as Int
+                            val value = animator.animatedValue as Int
                             dashboard_view.velocity = value
                         }
                         animator.start()
@@ -230,7 +230,7 @@ class MainActivity : AppCompatActivity() {
             mAMap?.clear()
             for (i in 0..11) {
                 if (mlatlngs.size != 12) {
-                    var latlngs = db?.someLatlng(i + 1)
+                    val latlngs = db?.someLatlng(i + 1)
                     mlatlngs.add(latlngs!!)
                 }
                 if (type) {
@@ -241,7 +241,7 @@ class MainActivity : AppCompatActivity() {
                         strokewidth = 5f
                     }
                     polygonOptions.fillColor(colors[i]).strokeWidth(strokewidth).strokeColor(Color.RED)
-                    var polygen = mAMap?.addPolygon(polygonOptions)
+                    val polygen = mAMap?.addPolygon(polygonOptions)
                     if (polygons.size != 11 && i != 0) {
                         polygons.add(polygen!!)
                     }
@@ -272,7 +272,7 @@ class MainActivity : AppCompatActivity() {
                     dashboard_view.velocity, 165)
             animator.duration = 1500
             animator.addUpdateListener { animator ->
-                var value = animator.animatedValue as Int
+                val value = animator.animatedValue as Int
                 dashboard_view.velocity = value
             }
             animator.start()
@@ -284,7 +284,7 @@ class MainActivity : AppCompatActivity() {
             setPieData(mChart_gander, mParties_gander, t.gender.split(","))
 
             setBarData(mChart_year, year, 5, mBarlabels, t.country.split(","), t.city.split(","), t.total.split(","))
-            var totals = t.total.split(",")
+            val totals = t.total.split(",")
             total_hushi = totals[0].toInt()
             total_cur = total_hushi
             initRadarChart(radarchart)
@@ -442,9 +442,9 @@ class MainActivity : AppCompatActivity() {
             yVals2.add(BarEntry(i.toFloat(), values[1][i - 1].toFloat()))
             yVals3.add(BarEntry(i.toFloat(), values[2][i - 1].toFloat()))
         }
-        var set1: BarDataSet
-        var set2: BarDataSet
-        var set3: BarDataSet
+        val set1: BarDataSet
+        val set2: BarDataSet
+        val set3: BarDataSet
 
         if (mChart.data != null && mChart.data.dataSetCount > 0) {
 

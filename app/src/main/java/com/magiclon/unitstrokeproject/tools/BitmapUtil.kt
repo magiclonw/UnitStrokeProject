@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.magiclon.unitstrokeproject.tools
 
 import android.app.ProgressDialog
@@ -29,23 +31,19 @@ import java.io.FileOutputStream
  * 描述：
  */
 object BitmapUtil {
-
-    @Suppress("DEPRECATION")
     fun saveViewBitmap2File(filename: String, view: View, context: Context) {
-        var dialog: ProgressDialog? = null
-        dialog = ProgressDialog(context)
+        val dialog = ProgressDialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCanceledOnTouchOutside(true)
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
         dialog.setMessage("请稍候...")
         dialog.show()
         var subscription: Subscription? = null
-        var bitmap: Bitmap? = null
         view.measure(View.MeasureSpec.makeMeasureSpec(0,
                 View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0,
                 View.MeasureSpec.UNSPECIFIED))
         view.layout(0, 0, view.measuredWidth, view.measuredHeight)
-        bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.RGB_565)
+        val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.RGB_565)
         val c = Canvas(bitmap)
         c.drawColor(Color.WHITE)
         view.draw(c)
@@ -81,24 +79,22 @@ object BitmapUtil {
     }
 
     fun saveToPdf(filename: String, view: View, context: Context) {
-        var dialog: ProgressDialog? = null
-        dialog = ProgressDialog(context)
+        val dialog = ProgressDialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCanceledOnTouchOutside(true)
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER)
         dialog.setMessage("请稍候...")
         dialog.show()
         var subscription: Subscription? = null
-        var bitmap: Bitmap? = null
         view.measure(View.MeasureSpec.makeMeasureSpec(0,
                 View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0,
                 View.MeasureSpec.UNSPECIFIED))
-        view.layout(0,0, view.measuredWidth, view.measuredHeight)
-        bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.RGB_565)
-        val c = Canvas(bitmap)
-        c.drawColor(Color.WHITE)
-        view.draw(c)
+        view.layout(0, 0, view.measuredWidth, view.measuredHeight)
         subscription = Observable.create(Observable.OnSubscribe<Boolean> { t ->
+            val bitmap = Bitmap.createBitmap(view.width, view.height, Bitmap.Config.RGB_565)
+            val c = Canvas(bitmap)
+            c.drawColor(Color.WHITE)
+            view.draw(c)
             var document: Document? = null
             var writer: PdfWriter? = null
             var baos: ByteArrayOutputStream? = null
@@ -113,7 +109,7 @@ object BitmapUtil {
                 baos = ByteArrayOutputStream()
                 bitmap?.compress(Bitmap.CompressFormat.PNG, 100, baos)
                 val image = Image.getInstance(baos.toByteArray())
-                if (bitmap.height > 14400) {
+                if (bitmap?.height!! > 14400) {
                     document = Document(RectangleReadOnly(bitmap.width.toFloat() * (14399.0f / bitmap.height.toFloat()), 14399f), 0f, 0f, 0f, 0f)
                     image.scaleAbsolute(bitmap.width.toFloat() * (14399.0f / bitmap.height.toFloat()), 14399f)
                 } else {
