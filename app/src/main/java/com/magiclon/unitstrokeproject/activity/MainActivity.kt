@@ -153,6 +153,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         iv_downloadpdf.setOnClickListener {
+            rv_qulist.clearFocus()
             iv_downloadpdf.visibility = View.INVISIBLE
             iv_seemore.visibility = View.INVISIBLE
             BitmapUtil.saveToPdf("${polygeninfo.dpname}.pdf", dragView, this)

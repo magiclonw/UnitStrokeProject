@@ -107,6 +107,7 @@ class NextUnitActivity : AppCompatActivity() {
             startActivity(intent)
         }
         iv_downloadpdf.setOnClickListener {
+            rv_qulist.clearFocus()
             if(unit_id.length < 12){
                 iv_next_back.visibility=View.INVISIBLE
                 iv_downloadpdf.visibility=View.INVISIBLE
