@@ -98,7 +98,6 @@ class MainActivity : AppCompatActivity() {
         mAMap?.uiSettings?.logoPosition = AMapOptions.LOGO_POSITION_BOTTOM_RIGHT
         mAMap?.uiSettings?.zoomPosition = AMapOptions.ZOOM_POSITION_RIGHT_CENTER
         mAMap?.setOnMapClickListener { latlng ->
-            Log.e("----",latlng.toString())
             polygons.forEachIndexed { _, polygon ->
                 if (polygon.contains(latlng)) {
                     changeData(polygon.id)

@@ -66,8 +66,8 @@ class NextUnitActivity : AppCompatActivity() {
     protected var mParties_type = arrayOf("现享受", "新申请", "退保")
     private var values_hk = arrayOf("0.456", "0.534")
     private var values_gander = arrayOf("0.539", "0.461")
-    private var values_type1 = arrayOf(94f, 27f,26f)
-    private var values_type2 = arrayOf(82f, 7f,8f)
+    private var values_type1 = arrayOf(94f, 27f, 26f)
+    private var values_type2 = arrayOf(82f, 7f, 8f)
     private var values_country = arrayOf("452", "435", "467", "487", "497")
     private var values_city = arrayOf("552", "565", "577", "587", "595")
     private var values_total = arrayOf("1020", "1030", "1040", "1070", "1090")
@@ -81,9 +81,11 @@ class NextUnitActivity : AppCompatActivity() {
         depname = intent.extras.getString("depname")
         unit_id = intent.extras.getString("unit_id")
         total_pre = intent.extras.getInt("total_cur")
-        db = MyDb(this)
-        initEvents()
-        initData()
+        rl_next.post {
+            db = MyDb(this)
+            initEvents()
+            initData()
+        }
     }
 
     private fun initEvents() {
@@ -108,20 +110,20 @@ class NextUnitActivity : AppCompatActivity() {
         }
         iv_downloadpdf.setOnClickListener {
             rv_qulist.clearFocus()
-            if(unit_id.length < 12){
-                iv_next_back.visibility=View.INVISIBLE
-                iv_downloadpdf.visibility=View.INVISIBLE
-                BitmapUtil.saveToPdf("$depname.pdf",rl_next,this)
-                iv_next_back.visibility=View.VISIBLE
-                iv_downloadpdf.visibility=View.VISIBLE
-            }else{
-                iv_next_more.visibility=View.INVISIBLE
-                iv_next_back.visibility=View.INVISIBLE
-                iv_downloadpdf.visibility=View.INVISIBLE
-                BitmapUtil.saveToPdf("$depname.pdf",rl_next,this)
-                iv_next_more.visibility=View.VISIBLE
-                iv_next_back.visibility=View.VISIBLE
-                iv_downloadpdf.visibility=View.VISIBLE
+            if (unit_id.length < 12) {
+                iv_next_back.visibility = View.INVISIBLE
+                iv_downloadpdf.visibility = View.INVISIBLE
+                BitmapUtil.saveToPdf("$depname.pdf", rl_next, this)
+                iv_next_back.visibility = View.VISIBLE
+                iv_downloadpdf.visibility = View.VISIBLE
+            } else {
+                iv_next_more.visibility = View.INVISIBLE
+                iv_next_back.visibility = View.INVISIBLE
+                iv_downloadpdf.visibility = View.INVISIBLE
+                BitmapUtil.saveToPdf("$depname.pdf", rl_next, this)
+                iv_next_more.visibility = View.VISIBLE
+                iv_next_back.visibility = View.VISIBLE
+                iv_downloadpdf.visibility = View.VISIBLE
             }
             tv_next_title.text = depname
         }
@@ -410,13 +412,14 @@ class NextUnitActivity : AppCompatActivity() {
         l.xEntrySpace = 7f
         l.yEntrySpace = 5f
         l.textColor = Color.GRAY
-        setRadarData(mChart,total)
+        setRadarData(mChart, total)
     }
-    private fun setRadarData(mChart: RadarChart,total:Int){
+
+    private fun setRadarData(mChart: RadarChart, total: Int) {
 
         // create a custom MarkerView (extend MarkerView) and specify the layout
         // to use for it
-        val mv = RadarMarkerView(this, R.layout.custom_marker_view,total)
+        val mv = RadarMarkerView(this, R.layout.custom_marker_view, total)
         mv.chartView = mChart // For bounds control
         mChart.marker = mv // Set the marker to the chart
         val cnt = 3
