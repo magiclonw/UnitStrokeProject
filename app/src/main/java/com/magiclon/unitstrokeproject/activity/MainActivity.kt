@@ -258,7 +258,6 @@ class MainActivity : AppCompatActivity() {
                     // 向地图上添加 TileOverlayOptions 类对象
                     mAMap?.addTileOverlay(tileOverlayOptions)
                 }
-                Thread.sleep(100)
             }
             if (isfirst) {
                 polygeninfo = db?.getSomePolygenInfo("Polygon1")!!
