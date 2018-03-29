@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import com.amap.api.maps.AMap
@@ -89,14 +90,15 @@ class MainActivity : AppCompatActivity() {
     fun initAmap() {//初始化地图
         mAMap = map.map
         // 西南坐标
-        val southwestLatLng = LatLng(39.25, 110.27)
+        val southwestLatLng = LatLng(39.55, 110.45)
         // 东北坐标
-        val northeastLatLng = LatLng(41.8, 112.5)
+        val northeastLatLng = LatLng(41.40, 112.40)
         val limitbounds = LatLngBounds(southwestLatLng, northeastLatLng)
         mAMap?.setMapStatusLimits(limitbounds)
         mAMap?.uiSettings?.logoPosition = AMapOptions.LOGO_POSITION_BOTTOM_RIGHT
         mAMap?.uiSettings?.zoomPosition = AMapOptions.ZOOM_POSITION_RIGHT_CENTER
         mAMap?.setOnMapClickListener { latlng ->
+            Log.e("----",latlng.toString())
             polygons.forEachIndexed { _, polygon ->
                 if (polygon.contains(latlng)) {
                     changeData(polygon.id)
